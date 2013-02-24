@@ -1,0 +1,90 @@
+﻿Class Notes Week 4
+Symbol Table keeps track of variables and their scope.
+Symbol Table assignment due at 9AM next Tuesday.
+
+Symbol Table
+Need to have a symbol type
+Stack offset says how far away a sibmle is froma stack
+
+attribute class keeps track off all we want to know about the symbol
+we want to keep Stack offset, type of variable, how big an array is it,
+scope, scopized name.
+
+Proclist
+Add up memory scope
+-------Check Exception----------
+When you clicks get Token List when no file has been loaded.
+When user clicks cancel after attempting to load a source file.
+
+    /*********************************************************************************
+
+        The procedure call needs a few words of explanation:
+
+        Note STACK_START above (set to 4) The first two bytes are used for BP (to return).
+        The next two store the IP register (to return).
+        IP is pushed by CALL. The CALLEE pushes BP. 
+
+        Next are the parameters (the first parameter is pushed first,
+        Last are the local variables, pushed onto the stack as they are encountered.
+
+
+            Here is a hypothetical stack with two local variables and three parameters (e.g. Towers of Hanoi).
+            All are assumed to be four byte integers (except for param 2 which is one byte.
+            These conventions correspond roughly to those of Dandamudi, p. 142
+
+            Note that the Intel stack decrements and that the "new" value of BP
+                (the value used during statements within this procedure) is equal to the
+                lowest address. Note that iMemory needed would be set to 21 after encountering
+                all variables in this scope.
+
+            the stack   pointer  Variable "offset"
+                                in pAttr      
+                                = memory needed
+                                after this var 
+                                is included
+
+            param 1     bp + 17       8
+            param 2     bp + 16       9
+            param 3     bp + 12      13
+            local 1     bp + 8       17
+            local 2     bp + 4       21
+            IP          bp + 2      none
+            BP          bp          none
+
+            While in the scope of the procedure, the next available byte will be 21,
+            so to reach local variables or parameters, 
+            the emitter needs to look at bp + (PROC_mem_total - Var_offset + 4) 
+
+            After parsing all parameters and local variables, AdjustMemoryOffset() will change "offset"
+            to the actual offset (using this equation). It makes more sense to do
+            this once at parse time than redo the math for every reference.
+
+        This further requires the CALLER to subtract (or "push") iLocalVarSpaceNeeded from SP after 
+        pushing the parameters onto the stack, but before the call. At the end of the PROC, 
+        the CALLEE will need to pop BP and then "ret (PROC_offset - 4)" (that is, return that number) 
+        to clean up the stack.
+
+    Consider a version of this stack that includes an array.
+
+            the stack   pointer  Variable "offset"
+                                in pAttr      
+                                = memory needed
+                                after this var 
+                                is included
+
+            param 1     bp + 32       8
+            local 1     bp + 28      12
+            loc array   bp + 8       32          array of 5 INTEGERS
+            local 2     bp + 4       36
+            IP          bp + 2      none
+            BP          bp          none
+
+    Before we start executing PROC statments, we push everything onto the stack, then call
+    the PROC (which pushes IP onto the stack), then we "push BP" and finally "mov BP,SP". 
+    Now everything is just where we want it during PROC execution.
+    
+    Note too that the stack grows downward. Tom wrote a test program ("C:\classes\cs380\Mod\test_stack.a")
+       that illustrates this. Subtracting x from the stack pointer is equivalent to pushing
+       x bytes onto the stack.
+       
+    *********************************************************************************/

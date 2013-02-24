@@ -1,0 +1,3 @@
+MODULE test01 ;
+BEGIN
+END test01.
