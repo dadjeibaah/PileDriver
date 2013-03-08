@@ -106,26 +106,6 @@ namespace PileDriver
                     return nextchar;
                     
                 }
-              
-                    /*if (srSrcReader.Peek() >= 0)
-                    {
-                        char[] inchar = new char[1];
-                        srSrcReader.Read(inchar, 0, 1);
-
-                        if (inchar[0] == '\r' && srSrcReader.Peek() == '\n')
-                        {
-                        
-                            srSrcReader.Read(inchar, 0, 1);
-                            Linenum++;
-                            return "SPACE";
-                        }
-                        else if (inchar[0] == ' ')
-                        {
-                            return "SPACE";
-                        }
-                        else return inchar[0].ToString();
-                    }*/
-
                    
             }
             StreamRst();

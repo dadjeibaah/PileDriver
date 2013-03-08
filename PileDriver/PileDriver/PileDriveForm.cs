@@ -119,5 +119,10 @@ namespace PileDriver
             }
             else MessageBox.Show("Please ensure that a source file is loaded and then dump sym table");
         }
+
+        private void buildRunToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fMain.Compile();
+        }
     }
 }

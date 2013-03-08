@@ -87,4 +87,56 @@ When user clicks cancel after attempting to load a source file.
        that illustrates this. Subtracting x from the stack pointer is equivalent to pushing
        x bytes onto the stack.
        
+	   ATTENTION
+	   For your find in scope, make sure that your find in scope with the scope stack NOT
+	   all the scopes
+
     *********************************************************************************/
+	Parser
+	needs the runtime stack for variables only
+	Parser will have parser defined functions that handle things like WriteInt and such
+
+	When you click Build
+
+	Assumptions
+	The user has specified the directory for MASM
+	The user has specified a path for the source file.
+	The user has selected a file that will be parsed.
+
+	Parser needs to have an instance of emitter and it creates the files and invokes the cmd.
+
+
+
+	First Method of Parsing
+	___________________________________________________________________________________
+	  while (currToken.m_tokType != Token.TOKENTYPE.EOF)
+            {
+                switch (currToken.m_tokType)
+                {
+                    case Token.TOKENTYPE.MODULE:
+                        currToken = tokenizerobj.GetNextToken();
+                        if (currToken.m_tokType == Token.TOKENTYPE.ID)
+                        {
+                            table.AddMaintoTable();
+                            table.AddSymbol(new ATTRIBUTE(currToken.m_strName, table.GetCurrScope()));
+                        }
+                        break;
+                    case Token.TOKENTYPE.BEGIN:
+                        break;
+                    case Token.TOKENTYPE.END:
+                        {
+                            currToken = tokenizerobj.GetNextToken();
+                            if (currToken.m_tokType == Token.TOKENTYPE.ID)
+                            {
+
+                            }
+                        }
+                        break;
+                    default:
+                        {
+                            continue;
+                        }
+                        
+                }
+
+				SHow symbol table

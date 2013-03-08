@@ -29,17 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.tCMainTab = new System.Windows.Forms.TabControl();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.TbOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tPSource = new System.Windows.Forms.TabPage();
-            this.tbSourceCde = new System.Windows.Forms.TextBox();
-            this.tPToken = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.TopMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDirectoriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +41,7 @@
             this.functionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getNextCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.functionTestButtonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumbSymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tBSource = new System.Windows.Forms.TextBox();
             this.tBMASM = new System.Windows.Forms.TextBox();
             this.Loadbtn = new System.Windows.Forms.Button();
@@ -56,27 +51,19 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dumbSymbolTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tCMainTab.SuspendLayout();
+            this.tPToken = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.tPSource = new System.Windows.Forms.TabPage();
+            this.tbSourceCde = new System.Windows.Forms.TextBox();
+            this.tCMainTab = new System.Windows.Forms.TabControl();
+            this.buildRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TbOptions.SuspendLayout();
-            this.tPSource.SuspendLayout();
+            this.TopMenu.SuspendLayout();
             this.tPToken.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.TopMenu.SuspendLayout();
+            this.tPSource.SuspendLayout();
+            this.tCMainTab.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tCMainTab
-            // 
-            this.tCMainTab.ContextMenuStrip = this.TbOptions;
-            this.tCMainTab.Controls.Add(this.tPSource);
-            this.tCMainTab.Controls.Add(this.tPToken);
-            this.tCMainTab.Controls.Add(this.tabPage3);
-            this.tCMainTab.Location = new System.Drawing.Point(12, 30);
-            this.tCMainTab.Name = "tCMainTab";
-            this.tCMainTab.SelectedIndex = 0;
-            this.tCMainTab.Size = new System.Drawing.Size(686, 288);
-            this.tCMainTab.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tCMainTab.TabIndex = 0;
             // 
             // TbOptions
             // 
@@ -91,83 +78,6 @@
             this.closeTabToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.closeTabToolStripMenuItem.Text = "Close Active Tab";
             this.closeTabToolStripMenuItem.Click += new System.EventHandler(this.closeTabToolStripMenuItem_Click);
-            // 
-            // tPSource
-            // 
-            this.tPSource.Controls.Add(this.tbSourceCde);
-            this.tPSource.Location = new System.Drawing.Point(4, 22);
-            this.tPSource.Name = "tPSource";
-            this.tPSource.Padding = new System.Windows.Forms.Padding(3);
-            this.tPSource.Size = new System.Drawing.Size(678, 262);
-            this.tPSource.TabIndex = 0;
-            this.tPSource.Text = "Source Code";
-            this.tPSource.UseVisualStyleBackColor = true;
-            // 
-            // tbSourceCde
-            // 
-            this.tbSourceCde.Location = new System.Drawing.Point(6, 6);
-            this.tbSourceCde.Multiline = true;
-            this.tbSourceCde.Name = "tbSourceCde";
-            this.tbSourceCde.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbSourceCde.Size = new System.Drawing.Size(666, 250);
-            this.tbSourceCde.TabIndex = 0;
-            // 
-            // tPToken
-            // 
-            this.tPToken.Controls.Add(this.dataGridView1);
-            this.tPToken.Location = new System.Drawing.Point(4, 22);
-            this.tPToken.Name = "tPToken";
-            this.tPToken.Padding = new System.Windows.Forms.Padding(3);
-            this.tPToken.Size = new System.Drawing.Size(678, 262);
-            this.tPToken.TabIndex = 1;
-            this.tPToken.Text = "Token List";
-            this.tPToken.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dataGridView1.Size = new System.Drawing.Size(672, 256);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(678, 262);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Emmiter";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // TopMenu
             // 
@@ -206,7 +116,8 @@
             this.functionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.getNextCharacterToolStripMenuItem,
             this.functionTestButtonToolStripMenuItem,
-            this.dumbSymbolTableToolStripMenuItem});
+            this.dumbSymbolTableToolStripMenuItem,
+            this.buildRunToolStripMenuItem});
             this.functionsToolStripMenuItem.Name = "functionsToolStripMenuItem";
             this.functionsToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
             this.functionsToolStripMenuItem.Text = "Functions";
@@ -225,6 +136,14 @@
             this.functionTestButtonToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.functionTestButtonToolStripMenuItem.Text = "Get Token List";
             this.functionTestButtonToolStripMenuItem.Click += new System.EventHandler(this.functionTestButtonToolStripMenuItem_Click);
+            // 
+            // dumbSymbolTableToolStripMenuItem
+            // 
+            this.dumbSymbolTableToolStripMenuItem.Name = "dumbSymbolTableToolStripMenuItem";
+            this.dumbSymbolTableToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.dumbSymbolTableToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.dumbSymbolTableToolStripMenuItem.Text = "Dumb Symbol Table";
+            this.dumbSymbolTableToolStripMenuItem.Click += new System.EventHandler(this.dumbSymbolTableToolStripMenuItem_Click);
             // 
             // tBSource
             // 
@@ -307,13 +226,92 @@
             this.label3.TabIndex = 11;
             this.label3.Text = "Source";
             // 
-            // dumbSymbolTableToolStripMenuItem
+            // tPToken
             // 
-            this.dumbSymbolTableToolStripMenuItem.Name = "dumbSymbolTableToolStripMenuItem";
-            this.dumbSymbolTableToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.dumbSymbolTableToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
-            this.dumbSymbolTableToolStripMenuItem.Text = "Dumb Symbol Table";
-            this.dumbSymbolTableToolStripMenuItem.Click += new System.EventHandler(this.dumbSymbolTableToolStripMenuItem_Click);
+            this.tPToken.Controls.Add(this.dataGridView1);
+            this.tPToken.Location = new System.Drawing.Point(4, 22);
+            this.tPToken.Name = "tPToken";
+            this.tPToken.Padding = new System.Windows.Forms.Padding(3);
+            this.tPToken.Size = new System.Drawing.Size(678, 262);
+            this.tPToken.TabIndex = 1;
+            this.tPToken.Text = "Token List";
+            this.tPToken.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView1.Size = new System.Drawing.Size(672, 256);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // tPSource
+            // 
+            this.tPSource.Controls.Add(this.tbSourceCde);
+            this.tPSource.Location = new System.Drawing.Point(4, 22);
+            this.tPSource.Name = "tPSource";
+            this.tPSource.Padding = new System.Windows.Forms.Padding(3);
+            this.tPSource.Size = new System.Drawing.Size(678, 262);
+            this.tPSource.TabIndex = 0;
+            this.tPSource.Text = "Source Code";
+            this.tPSource.UseVisualStyleBackColor = true;
+            // 
+            // tbSourceCde
+            // 
+            this.tbSourceCde.Location = new System.Drawing.Point(6, 6);
+            this.tbSourceCde.Multiline = true;
+            this.tbSourceCde.Name = "tbSourceCde";
+            this.tbSourceCde.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbSourceCde.Size = new System.Drawing.Size(666, 250);
+            this.tbSourceCde.TabIndex = 0;
+            // 
+            // tCMainTab
+            // 
+            this.tCMainTab.ContextMenuStrip = this.TbOptions;
+            this.tCMainTab.Controls.Add(this.tPSource);
+            this.tCMainTab.Controls.Add(this.tPToken);
+            this.tCMainTab.Location = new System.Drawing.Point(12, 30);
+            this.tCMainTab.Name = "tCMainTab";
+            this.tCMainTab.SelectedIndex = 0;
+            this.tCMainTab.Size = new System.Drawing.Size(686, 288);
+            this.tCMainTab.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tCMainTab.TabIndex = 0;
+            // 
+            // buildRunToolStripMenuItem
+            // 
+            this.buildRunToolStripMenuItem.Name = "buildRunToolStripMenuItem";
+            this.buildRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
+            this.buildRunToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.buildRunToolStripMenuItem.Text = "Build and Run";
+            this.buildRunToolStripMenuItem.Click += new System.EventHandler(this.buildRunToolStripMenuItem_Click);
             // 
             // PileDriveForm
             // 
@@ -335,14 +333,14 @@
             this.Name = "PileDriveForm";
             this.Text = "PileDriver";
             this.Load += new System.EventHandler(this.PileDriveForm_Load);
-            this.tCMainTab.ResumeLayout(false);
             this.TbOptions.ResumeLayout(false);
-            this.tPSource.ResumeLayout(false);
-            this.tPSource.PerformLayout();
-            this.tPToken.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.TopMenu.ResumeLayout(false);
             this.TopMenu.PerformLayout();
+            this.tPToken.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tPSource.ResumeLayout(false);
+            this.tPSource.PerformLayout();
+            this.tCMainTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -352,22 +350,17 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tCMainTab;
-        private System.Windows.Forms.TabPage tPSource;
-        private System.Windows.Forms.TabPage tPToken;
         private System.Windows.Forms.MenuStrip TopMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.TextBox tBSource;
         private System.Windows.Forms.TextBox tBMASM;
         private System.Windows.Forms.Button Loadbtn;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button bTLoadSource;
         private System.Windows.Forms.Button bTLoadMASM;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tbSourceCde;
         private System.Windows.Forms.ToolStripMenuItem functionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getNextCharacterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openDirectoriesToolStripMenuItem;
@@ -375,8 +368,13 @@
         private System.Windows.Forms.ContextMenuStrip TbOptions;
         private System.Windows.Forms.ToolStripMenuItem closeTabToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem functionTestButtonToolStripMenuItem;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem dumbSymbolTableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem buildRunToolStripMenuItem;
+        private System.Windows.Forms.TabPage tPToken;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TabPage tPSource;
+        private System.Windows.Forms.TextBox tbSourceCde;
+        private System.Windows.Forms.TabControl tCMainTab;
     }
 }
 

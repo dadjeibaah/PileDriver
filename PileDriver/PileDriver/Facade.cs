@@ -16,7 +16,8 @@ namespace PileDriver
         MA,         //Type of file path for MASM directory
         SRC_D,      //Type of file path for source code directory
         SRC_F,       //Type of "file path" for source code file.
-        TKN_F
+        TKN_F,
+        ASM
     };
 
     class Facade
@@ -25,7 +26,7 @@ namespace PileDriver
         SourceFile srcFile;
         Tokenizer Lexer;
         SymbolTable symtable;
-        
+        Parser LLParser;
 
         public Facade()
         {
@@ -33,6 +34,7 @@ namespace PileDriver
             srcFile = new SourceFile();
             Lexer = Tokenizer.GetTokenizer();
             symtable = SymbolTable.Instance();
+            LLParser = Parser.GetParser();
         }
 
 
@@ -123,6 +125,15 @@ namespace PileDriver
             if (fhHandler.RtnFilePath(DIR_TYPE.TKN_F, false).Contains("Cannot"))
                 return false;
             else return true;
+        }
+
+        public void Compile()
+        {
+            DisplayTokens();
+            LLParser.CompileSource();
+            CreateSymTableFile();
+            
+            
         }
 
     }

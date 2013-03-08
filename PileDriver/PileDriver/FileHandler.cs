@@ -10,27 +10,37 @@ namespace PileDriver
     public enum FileCreate
     {
         SymFile,
-        TokFile
+        TokFile,
+        Cmd,
+        ASM,
+        SINC,
+        PINC
     };
     class FileHandler
     {
         private Hashtable FileList;
+        private string FileNamenoX;
 
         private static FileHandler fHModel;
         private static Object fHModel_lock = typeof(FileHandler);
 
+        public string FileName
+        {
+            get { return FileNamenoX; }
+        }
         /*Constructor: FileHandler
          * Pre:     FileList, the hashtable to store directories and file names has been declared
-         * Post:    3 default directory types (SRC_D,MA and SRC_F) have been added to the FileList as
+         * Post:    3 default directory types (SRC_D, and SRC_F) have been added to the FileList as
          *          keys with null values
          * */
         private FileHandler()
         {
             FileList = new Hashtable();
-            FileList.Add(DIR_TYPE.SRC_D, "C:\\Users\\Deebo\\TEST_MOD");
+            FileList.Add(DIR_TYPE.SRC_D, "C:\\Users\\Deebo\\Documents\\College\\Spring 2013\\Compilers\\TEST_MOD");
             FileList.Add(DIR_TYPE.MA, null);
             FileList.Add(DIR_TYPE.SRC_F, null);
             FileList.Add(DIR_TYPE.TKN_F, null);
+           
 
         }//FileHandler
 
@@ -93,6 +103,7 @@ namespace PileDriver
                 {
                     //add filepath info for selected directory or file.
                     FileList[DIR_TYPE.SRC_F] = ofdFile.SafeFileName;
+                    FileNamenoX = ((string)FileList[DIR_TYPE.SRC_F]).Substring(0, ((string)FileList[DIR_TYPE.SRC_F]).IndexOf('.'));
                 }
                 catch (Exception ex)
                 {
@@ -110,7 +121,7 @@ namespace PileDriver
          *          a value and isFileName is true
          *          otherwise the value of the passed in DIR_TYPE is returned
          * */
-        public string RtnFilePath(DIR_TYPE DirType, bool isFullFilePath)
+        public string RtnFilePath(DIR_TYPE DirType, bool isFullFilePath = false)
         {
             //return a string for a directory in the file handler.
             if (FileList[DirType] == null)
@@ -139,9 +150,11 @@ namespace PileDriver
                     string pathString = System.IO.Path.Combine((string)FileList[DIR_TYPE.SRC_D], filenoext + "_" + "PileDriven");
                     FileList[DIR_TYPE.TKN_F] = pathString;
                     System.IO.Directory.CreateDirectory(pathString);
+                    string asm = pathString + "\\" + filenoext + " ASM";
+                    FileList[DIR_TYPE.ASM] = asm;
                 }
             }
-            catch(NullReferenceException ex)
+            catch(NullReferenceException)
             {
                 MessageBox.Show("Please load a source file");
             }
@@ -153,6 +166,22 @@ namespace PileDriver
                 System.IO.File.WriteAllText(FileList[DIR_TYPE.TKN_F] + "\\TokenList.txt", text);
             else if (type == FileCreate.SymFile)
                 System.IO.File.WriteAllText(FileList[DIR_TYPE.TKN_F] + "\\SymbolT.txt", text);
+            else if(type == FileCreate.Cmd)
+            {
+             File.WriteAllText(FileList[DIR_TYPE.TKN_F] +"\\"+FileNamenoX+".cmd",text);
+            }
+            else if (type == FileCreate.ASM)
+            {
+                System.IO.File.WriteAllText(FileList[DIR_TYPE.TKN_F] + "\\"+FileNamenoX+".asm", text);
+            }
+            else if (type == FileCreate.SINC)
+            {
+                File.WriteAllText(FileList[DIR_TYPE.TKN_F] + "\\strings.inc", text);
+            }
+            else if (type == FileCreate.PINC)
+            {
+                File.WriteAllText(FileList[DIR_TYPE.TKN_F] + "\\proclist.inc", text);
+            }
         }
     }
 }

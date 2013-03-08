@@ -13,6 +13,38 @@ public class ATTRIBUTE
     protected VAR_TYPE TypeVar;
     protected int AS, AE;
     protected bool isConst;
+    private int st_offset;
+    private int end_offset;
+
+    public int Nd_Offset
+    {
+        get { return end_offset; }
+        set { end_offset = value; }
+    }
+
+    public int Offset
+    {
+        get { return st_offset; }
+        set { st_offset = value; }
+    }
+    
+
+    public ATTR_TYPE ATTR_T
+    {
+        get { return at_type; }
+    }
+    public int ArraySt
+    {
+        get { return AS; }
+    }
+    public int ArrayEnd
+    {
+        get { return AE; }
+    }
+    public string ID
+    {
+        get { return ID_name; }
+    }
 
     public ATTRIBUTE()
     {
@@ -27,12 +59,14 @@ public class ATTRIBUTE
     {
         if (attr.at_type == ATTR_TYPE.TYPE)
         {
-            at_type = ATTR_TYPE.VAR;
+            ID_name = sName;
+            at_type = ATTR_TYPE.ARRAY;
             int[] t = (int[])attr.value;
-            iMemory = 4 * t.Length;
+            iMemory = 4 * ((t[t.Length-1] - t[0]) + 1);
+            iScope = scope;
             value = attr.value;
-            AS = attr.AS;
-            AE = attr.AE;
+            AS = t[0];
+            AE = t[1];
         }
     }
     public ATTRIBUTE(string sName, int scope, object incvalue, bool Const)
@@ -44,7 +78,7 @@ public class ATTRIBUTE
         if (incvalue is int)
         {
             iMemory = 4;
-            TypeVar = VAR_TYPE.INT;
+            at_type = ATTR_TYPE.INT;
             value = incvalue;
             if (Const)
             {
@@ -55,11 +89,11 @@ public class ATTRIBUTE
         }
         else if (incvalue.GetType().IsArray)
         {
-            TypeVar = VAR_TYPE.TYPE;
+            at_type = ATTR_TYPE.TYPE;
             int[] array = (int[])incvalue;
             value = array;
             AS = array[0];
-            AE = array[array.Length - 1];
+            AE = array[1];
         }
            
     }
@@ -77,15 +111,29 @@ public class ATTRIBUTE
     {
         return ID_name;
     }
-    public void ChangeValue(int i)
+    public void ChangeValue(object i)
     {
-        if(!(at_type == ATTR_TYPE.CONST) && TypeVar == VAR_TYPE.INT)
-        value = i;
+        if (at_type == ATTR_TYPE.INT)
+            value = i;
+        else if (at_type == ATTR_TYPE.TYPE)
+        {
+            int[] array = (int[])i;
+            value = array;
+            AS = array[0];
+            AE = array[1];
+        }
     }
 
     public string GetTypeAsStr()
     {
        return at_type.ToString();
+    }
+
+    public string DisplayValue()
+    {
+        if (this.at_type == ATTR_TYPE.CONST)
+            return value.ToString();
+        else return "0";
     }
     
 }
@@ -108,13 +156,14 @@ public enum ATTR_TYPE
     TYPE,
     CONST,
     PROC,
-    ARRAY
+    ARRAY,
+    INT
 };
 public enum VAR_TYPE
 {
     TYPE,
     ARRAY,
-    INT
+   
 };
 
 /// <summary>
@@ -151,6 +200,7 @@ public class ProcVarList
 public class SymbolTable
 {
     public static int STACK_START = 4; // first byte of stack available for variables, explained next:
+    public int varcount = 1;
     private static SymbolTable smb_table;
     private static Object smb_table_lock = typeof(SymbolTable);
     private Hashtable table;
@@ -166,9 +216,8 @@ public class SymbolTable
             if (smb_table == null)
             {
                 smb_table = new SymbolTable();
-                return smb_table;
+                
             }
-
             return smb_table;
         }
     }
@@ -185,10 +234,10 @@ public class SymbolTable
         
     }
 
-    public void AddMaintoTable()
+    public void AddMaintoTable(string mainname)
     {
         IncrementScope();
-         PROC pMain = new PROC("Main",GetCurrScope());
+         PROC pMain = new PROC("P"+mainname,GetCurrScope());
         table.Add(String.Format("PD{0}_{1}",pMain.Scope,pMain.ToString()),pMain);  
 
     }
@@ -231,23 +280,31 @@ public class SymbolTable
     }
     public void AddSymbol(ATTRIBUTE attr)
     {
-        
-        table.Add(String.Format("PD{0}_{1}", attr.Scope, attr.ToString()), attr);
+        string Symname = String.Format("PD{0}_{1}", attr.Scope, attr.ToString());
+        ATTRIBUTE foundattr = null;
+        bool isPresent = false;
+        FindScopized (Symname, out foundattr, out isPresent);
+        if (!isPresent)
+        {
+            if (attr.ATTR_T == ATTR_TYPE.INT)
+            {
+                attr.Offset = varcount * STACK_START;
+                varcount++;
+            }
+            if (attr.ATTR_T == ATTR_TYPE.ARRAY)
+            {
+                attr.Offset = varcount*STACK_START;
+                varcount++;
+                attr.Nd_Offset = ((attr.ArrayEnd - attr.ArraySt) + 1) * 4;
+                varcount = ((attr.ArrayEnd - attr.ArraySt) + 2);
+            }
+            table.Add(Symname, attr);
+        }
     }
 
     public string DumpSymTable()
     {
         string rtn = "SymbolTable Dump\r\n\r\n";
-        AddMaintoTable();
-        AddSymbol(new PROC("Fill",GetCurrScope()));
-        IncrementScope();
-        AddSymbol(new ATTRIBUTE("index",GetCurrScope()));
-        AddSymbol(new ATTRIBUTE("TEST",GetCurrScope(),4,true));
-        DecrementScope();
-        AddSymbol(new PROC("Sort", GetCurrScope()));
-        IncrementScope();
-        AddSymbol(new ATTRIBUTE("aiArray",GetCurrScope(),new int[]{1,2,3,4},false));
-        DecrementScope();
 
         rtn += "Memory for each scope\r\n";
         foreach (int i in TotalScope)
@@ -256,16 +313,16 @@ public class SymbolTable
             rtn += String.Format("Scope: {0,5}  Memory: {1,10}\r\n", i, MemoryForScope(i));
         }
 
-        rtn+="**-----------------------------------------------------------------------------------------------------**\r\n";
-        rtn += String.Format("{0}{1,16}{2,16}{3,16}{4,16}{5,16}{6,16}\r\n", "Attribute", "Type", "Memory", "Scope", "Value", "ArrayStart", "ArrayEnd");
+        rtn+="**-------------------------------------------------------------------------------------------------------------------**\r\n";
+        rtn += String.Format("|{0,-12} |{1,12} | {2,12} | {3,12} | {4,12} | {5,12} | {6,12} | {7,12}|\r\n", "Attribute", "Type", "Memory", "Scope", "Value", "ArrayStart", "ArrayEnd","Offset");
 //rtn+= "Attribute Nam\t\tAttribute Type\t\tMemory Needed\t\tScope\t\tValue\t\tArrayStart\t\tArrayEnd\r\n";
-        rtn+="**-----------------------------------------------------------------------------------------------------**\r\n";
+        rtn+="**-------------------------------------------------------------------------------------------------------------------**\r\n";
 
         foreach (DictionaryEntry item in table)
         {
             ATTRIBUTE newitem = (ATTRIBUTE)item.Value;
-            rtn += String.Format("{0}{1,16}{2,16}{3,16}{4,16}{5,16}{6,16}\r\n", 
-                item.Key.ToString(), newitem.GetTypeAsStr(), newitem.Memory, newitem.Scope,"test", "test","test");     
+            rtn += String.Format("|{0,-12} |{1,12} | {2,12} | {3,12} | {4,12} | {5,12} | {6,12} | {7,12}|\r\n", 
+                item.Key.ToString(), newitem.GetTypeAsStr(), newitem.Memory, newitem.Scope,newitem.DisplayValue(), newitem.ArraySt,newitem.ArrayEnd,newitem.Nd_Offset);     
         }
         return rtn;
     }
@@ -284,20 +341,64 @@ public class SymbolTable
     /// FindInScope searches down the scope stack. 
     /// FindScopized searches for a "scopized" string. ("scopizing" is defined below).
     
-    /*///<summary>
-    void FindSymbol (string strName, out ATTRIBUTE Attr, out bool bPresent) 
-    {   
-    } // FindSymbol
-
+    ///<summary>
     public void FindInScope (string strName, out ATTRIBUTE Attr, out bool bPresent) 
     {
+        object[] values = new object[table.Count];
+        table.Values.CopyTo(values, 0);
+
+        foreach(int i in ScopeStack)
+        {
+            var query = (from ATTRIBUTE at in values where at.Scope == i && at.ID == strName select at);
+
+            if (query != null)
+            {
+                Attr = query.Single();
+                bPresent = true;
+                return;
+            }
+            
+        }
+ 
+             Attr = null;
+             bPresent = false;
+
+        
+    } // FindSymbol
+   
+    public void FindSymbol (string strName, out ATTRIBUTE Attr, out bool bPresent) 
+    {
+        ArrayList values = (ArrayList)table.Values;
+        var query = from ATTRIBUTE at in values where at.ID == strName && at.Scope == GetCurrScope() select at;
+        if (query != null)
+        {
+            Attr = query.Single();
+            bPresent = true;
+        }
+        else
+        {
+            Attr = null;
+            bPresent = false;
+        }
+
     } // FindInScope
 
     /// <summary>
     /// Same as above, but with already-formed ("scopized") string.
     /// </summary>
+    
     public void FindScopized (string strLookup, out ATTRIBUTE Attr, out bool bPresent) 
     {
+        if (table.ContainsKey(strLookup))
+        {
+            Attr = (ATTRIBUTE)table[strLookup];
+            bPresent = true;
+        }
+        else
+        {
+            Attr = null;
+            bPresent = false;
+        }
     } // FindScopized
-   */
+   
 } // SymbolTable class
