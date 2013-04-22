@@ -278,6 +278,7 @@ namespace PileDriver
 
         public Token GetNextToken()
         {
+            STARTTOKEN:
             Char cNextChar = ' ';
             int CurrTokPos;
             int EndTokPos = 1;
@@ -370,7 +371,7 @@ namespace PileDriver
                         {
                             if (RemoveComment())
                             {
-                                return new Token(Token.TOKENTYPE.COMMENT_END, "comment", m_SourceFile.Line);
+                                goto STARTTOKEN;
                             }
                         }
                         return new Token(Token.TOKENTYPE.LEFT_PAREN, cNextChar.ToString(), m_SourceFile.Line);

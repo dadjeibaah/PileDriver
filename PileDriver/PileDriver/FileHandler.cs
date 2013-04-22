@@ -141,17 +141,25 @@ namespace PileDriver
         * */
         public void CreateFolder()
         {
+            string filenoext = (string)FileList[DIR_TYPE.SRC_F];
             try
             {
                 if (FileList[DIR_TYPE.TKN_F] == null)
                 {
-                    string filenoext = (string)FileList[DIR_TYPE.SRC_F];
+                    
                     filenoext = filenoext.Remove(filenoext.LastIndexOf('.'));
                     string pathString = System.IO.Path.Combine((string)FileList[DIR_TYPE.SRC_D], filenoext + "_" + "PileDriven");
                     FileList[DIR_TYPE.TKN_F] = pathString;
                     System.IO.Directory.CreateDirectory(pathString);
                     string asm = pathString + "\\" + filenoext + " ASM";
                     FileList[DIR_TYPE.ASM] = asm;
+                }
+                else
+                {
+                    filenoext = filenoext.Remove(filenoext.LastIndexOf('.'));
+                    string pathString = System.IO.Path.Combine((string)FileList[DIR_TYPE.SRC_D], filenoext + "_" + "PileDriven");
+                    FileList[DIR_TYPE.TKN_F] = pathString;
+                    System.IO.Directory.CreateDirectory(pathString);
                 }
             }
             catch(NullReferenceException)

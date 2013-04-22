@@ -53,8 +53,17 @@ public class ATTRIBUTE
     {
         ID_name = sName;
         iScope = scope;
+        
     }
-    
+
+    public ATTRIBUTE(string sName, int scope, ATTR_TYPE type)
+    {
+        ID_name = sName;
+        iMemory = 4;
+        at_type = ATTR_TYPE.INT;
+        iScope = scope;
+
+    }
     public ATTRIBUTE(string sName, int scope, ATTRIBUTE attr)
     {
         if (attr.at_type == ATTR_TYPE.TYPE)
@@ -62,11 +71,13 @@ public class ATTRIBUTE
             ID_name = sName;
             at_type = ATTR_TYPE.ARRAY;
             int[] t = (int[])attr.value;
-            iMemory = 4 * ((t[t.Length-1] - t[0]) + 1);
+            iMemory = 4 * ((attr.AE - attr.AS) + 1);
+
+            //iMemory = 4 * ((t[t.Length-1] - t[0]) + 1);
             iScope = scope;
-            value = attr.value;
-            AS = t[0];
-            AE = t[1];
+            //value = attr.value;
+            AS = attr.AS;
+            AE = attr.AE;
         }
     }
     public ATTRIBUTE(string sName, int scope, object incvalue, bool Const)
@@ -86,17 +97,21 @@ public class ATTRIBUTE
                 isConst = true;
             }
             else isConst = false;
-        }
-        else if (incvalue.GetType().IsArray)
-        {
-            at_type = ATTR_TYPE.TYPE;
-            int[] array = (int[])incvalue;
-            value = array;
-            AS = array[0];
-            AE = array[1];
-        }
-           
+        }           
     }
+
+    public ATTRIBUTE(string sName, int scope, int[] value)
+    {
+
+
+        ID_name = sName;
+        iScope = scope;
+        at_type = ATTR_TYPE.TYPE;
+        AS = (int)value[0];
+        AE = (int)value[1];
+        
+    }
+
 
     public int Scope
     {
@@ -286,7 +301,7 @@ public class SymbolTable
         FindScopized (Symname, out foundattr, out isPresent);
         if (!isPresent)
         {
-            if (attr.ATTR_T == ATTR_TYPE.INT)
+            if (attr.ATTR_T == ATTR_TYPE.INT || attr.ATTR_T == ATTR_TYPE.CONST)
             {
                 attr.Offset = varcount * STACK_START;
                 varcount++;
@@ -322,7 +337,7 @@ public class SymbolTable
         {
             ATTRIBUTE newitem = (ATTRIBUTE)item.Value;
             rtn += String.Format("|{0,-12} |{1,12} | {2,12} | {3,12} | {4,12} | {5,12} | {6,12} | {7,12}|\r\n", 
-                item.Key.ToString(), newitem.GetTypeAsStr(), newitem.Memory, newitem.Scope,newitem.DisplayValue(), newitem.ArraySt,newitem.ArrayEnd,newitem.Nd_Offset);     
+                item.Key.ToString(), newitem.GetTypeAsStr(), newitem.Memory, newitem.Scope,newitem.DisplayValue(), newitem.ArraySt,newitem.ArrayEnd,newitem.Offset);     
         }
         return rtn;
     }
@@ -344,20 +359,23 @@ public class SymbolTable
     ///<summary>
     public void FindInScope (string strName, out ATTRIBUTE Attr, out bool bPresent) 
     {
-        object[] values = new object[table.Count];
-        table.Values.CopyTo(values, 0);
-
-        foreach(int i in ScopeStack)
+        if (table.Count != 1)
         {
-            var query = (from ATTRIBUTE at in values where at.Scope == i && at.ID == strName select at);
+            object[] values = new object[table.Count];
+            table.Values.CopyTo(values, 0);
 
-            if (query != null)
+            foreach (int i in ScopeStack)
             {
-                Attr = query.Single();
-                bPresent = true;
-                return;
+                var query = (from ATTRIBUTE at in values where at.Scope == i && at.ID == strName select at);
+
+                if (query.Any())
+                {
+                    Attr = query.Single();
+                    bPresent = true;
+                    return;
+                }
+
             }
-            
         }
  
              Attr = null;
@@ -368,19 +386,21 @@ public class SymbolTable
    
     public void FindSymbol (string strName, out ATTRIBUTE Attr, out bool bPresent) 
     {
-        ArrayList values = (ArrayList)table.Values;
-        var query = from ATTRIBUTE at in values where at.ID == strName && at.Scope == GetCurrScope() select at;
-        if (query != null)
+        if (table.Count != 1)
         {
-            Attr = query.Single();
-            bPresent = true;
+            ArrayList values = (ArrayList)table.Values;
+            var query = from ATTRIBUTE at in values where at.ID == strName && at.Scope == GetCurrScope() select at;
+            if (query.Any())
+            {
+                Attr = query.Single();
+                bPresent = true;
+                return;
+            }
         }
-        else
-        {
-            Attr = null;
-            bPresent = false;
-        }
-
+        Attr = null;
+        bPresent = false;
+            
+        
     } // FindInScope
 
     /// <summary>
@@ -391,6 +411,7 @@ public class SymbolTable
     {
         if (table.ContainsKey(strLookup))
         {
+            
             Attr = (ATTRIBUTE)table[strLookup];
             bPresent = true;
         }
@@ -400,5 +421,39 @@ public class SymbolTable
             bPresent = false;
         }
     } // FindScopized
-   
+
+    public int TotalMemory()
+    {
+        int memory = 0;
+        foreach (int i in TotalScope)
+        {
+            memory += MemoryForScope(i);
+        }
+
+        return memory;
+    }
+
+    public void UpdateSymbol(string sName, object value)
+    {
+        ATTRIBUTE entry;
+        bool bisPresent;
+        FindInScope (sName, out entry, out bisPresent);
+        if (bisPresent)
+        {
+            entry.ChangeValue(value);
+            string entrykey = "PD" + entry.Scope + "_" + entry.ID;
+            table[entrykey] = entry;
+
+        }
+    }
+
+    public void Reset()
+    {
+        ScopeStack = new Stack();
+        iScopeNum = -1;
+        varcount = 1;
+        table = new Hashtable();
+        TotalScope = new List<int>();
+        table.Clear();
+    }
 } // SymbolTable class

@@ -197,22 +197,6 @@ namespace PileDriver
             }
         }
         
-        public void SelectArrayElement(int startarray, int arrayoffset)
-        {
-            procliststr+=";Calculating index for particular array value\r\n";
-            procliststr+=String.Format("\tmov EAX,{0}\r\n",startarray);
-            procliststr += "\tpush EAX\r\n" +
-                           "\tpop EBX\r\n" +
-                           "\tpop EAX\r\n" +
-                           "\tsub EAX,EBX\r\n" +
-                           "\tmov EBX,4\r\n" +
-                           "\timul EBX\r\n" +
-                         String.Format("\tmov EBX,{0}\r\n", arrayoffset) +
-                           "\tadd EAX,EBX\r\n" +
-                           "\tpush EAX\r\n" +
-                           "\tpop SI\r\n";
-
-        }
         // #########################################################################################
         // FILE HANDLER METHODS   FILE HANDLER METHODS   FILE HANDLER METHODS   FILE HANDLER METHODS   
         // #########################################################################################
@@ -326,12 +310,6 @@ namespace PileDriver
                                    "\tor EAX,EBX\r\n" +
                                    "\tpush EAX\r\n";
         }
-
-        public void AssignElement()
-        {
-            procliststr += "\tpop EAX\r\n" +
-                           "\tmov [BP+SI], EAX\r\n";
-        }
         public void LogicOperation(Token.TOKENTYPE relop)
         {
             evalcounter++;
@@ -367,11 +345,8 @@ namespace PileDriver
 
         public void FinalLogEval()
         {
-            procliststr += "\tmov EAX,0\r\n"+
-                            "\tpush EAX\r\n"+
-                           "\tpop EBX\r\n" +
-                           "\tpop EAX\r\n"+
-                          "\tcmp EAX, EBX\r\n";
+            procliststr += "\tpop EAX\r\n" +
+                          "\tcmp EAX, 0\r\n";
         }
 
         public void CompareInsstruction()
